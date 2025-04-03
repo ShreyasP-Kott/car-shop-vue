@@ -28,7 +28,7 @@ const showDropDown = (event) => {
 
 onMounted(() => {
   document.addEventListener("click", () => {
-    if (dropdownMenu.value.classList.contains("show")) {
+    if (dropdownMenu && dropdownMenu.value.classList.contains("show")) {
       dropdownMenu.value.classList.remove("show");
       dropDownButton.value.style.display = "block";
       closeButton.value.style.display = "none";

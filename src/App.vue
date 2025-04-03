@@ -8,8 +8,8 @@ import { ref } from "vue";
 let isOpen = ref(false);
 let errorMessage = ref(null);
 const toastRef = ref(null);
+let clearForm = ref(false);
 const handleLogin = async (loginData) => {
-  errorMessage.value = false;
   try {
     const response = await fetch("https://localhost:7154/api/auth/login", {
       method: "POST",
@@ -24,6 +24,7 @@ const handleLogin = async (loginData) => {
       throw new Error("Invalid login credentials");
     } else {
       isOpen.value = false;
+      clearForm.value = true;
     }
 
     const data = await response.json();
@@ -32,6 +33,10 @@ const handleLogin = async (loginData) => {
   } catch (error) {
     errorMessage.value = error.message;
   }
+};
+const handleClose = () => {
+  isOpen.value = false;
+  errorMessage.value = "";
 };
 const showToast = (message, type) => {
   toastRef.value?.addToast(message, type);
@@ -44,9 +49,10 @@ const showToast = (message, type) => {
   <Footer></Footer>
   <LoginModal
     :isOpen="isOpen"
-    @close="isOpen = false"
+    @close="handleClose"
     @login="(data) => handleLogin(data)"
     :errorMessage="errorMessage"
+    :clearForm="clearForm"
   />
   <Toast ref="toastRef" />
 </template>

@@ -12,7 +12,13 @@
       <form @submit.prevent="handleLogin">
         <div class="form-group">
           <label for="email">Email</label>
-          <input v-model="email" type="email" id="email" required />
+          <input
+            ref="emailRef"
+            v-model="email"
+            type="email"
+            id="email"
+            required
+          />
         </div>
         <div class="form-group">
           <label for="password">Password</label>
@@ -26,9 +32,13 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref } from "vue";
+import { defineProps, defineEmits, ref, watch } from "vue";
 
-const props = defineProps({ isOpen: Boolean, errorMessage: String });
+const props = defineProps({
+  isOpen: Boolean,
+  errorMessage: String,
+  clearForm: Boolean,
+});
 const emit = defineEmits(["close", "login"]);
 
 const email = ref("");
@@ -40,7 +50,16 @@ const handleLogin = () => {
 
 const closeModal = () => {
   emit("close");
+  email.value = "";
+  password.value = "";
 };
+
+watch(
+  () => props.clearForm,
+  (value) => {
+    if (value) closeModal();
+  }
+);
 </script>
 
 <style scoped lang="scss">
