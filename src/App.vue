@@ -1,53 +1,54 @@
 <script setup>
-import HelloWorld from "./components/HelloWorld.vue";
-import TheWelcme from "./components/TheWelcome.vue";
+import Header from "./components/Header.vue";
+import Carousel from "./components/Carousel.vue";
+import Footer from "./components/Footer.vue";
+import LoginModal from "./components/LoginModal.vue";
+import Toast from "./components/Toast.vue";
+import { ref } from "vue";
+let isOpen = ref(false);
+let errorMessage = ref(null);
+const toastRef = ref(null);
+const handleLogin = async (loginData) => {
+  errorMessage.value = false;
+  try {
+    const response = await fetch("https://localhost:7154/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: loginData.email,
+        password: loginData.password,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Invalid login credentials");
+    } else {
+      isOpen.value = false;
+    }
+
+    const data = await response.json();
+    localStorage.setItem("token", data.token);
+    showToast(data.message, "success");
+  } catch (error) {
+    errorMessage.value = error.message;
+  }
+};
+const showToast = (message, type) => {
+  toastRef.value?.addToast(message, type);
+};
 </script>
 
 <template>
-  <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="./assets/logo.svg"
-      width="125"
-      height="125"
-    />
-
-    <div class="wrapper">
-      <HelloWorld msg="Yo" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <Header @showLogin="(value) => (isOpen = value)"></Header>
+  <Carousel />
+  <Footer></Footer>
+  <LoginModal
+    :isOpen="isOpen"
+    @close="isOpen = false"
+    @login="(data) => handleLogin(data)"
+    :errorMessage="errorMessage"
+  />
+  <Toast ref="toastRef" />
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
+<style scoped lang="scss"></style>
