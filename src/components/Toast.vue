@@ -35,8 +35,8 @@ defineExpose({ addToast });
 <style scoped>
 .toast-container {
   position: fixed;
-  top: 50%;
-  left: 50%;
+  top: 55px;
+  right: -40px;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
@@ -47,19 +47,20 @@ defineExpose({ addToast });
 .toast {
   padding: 10px 15px;
   border-radius: 2px;
-  color: lightcyan;
+  color: white;
   font-weight: normal;
   cursor: pointer;
   min-width: 200px;
   text-align: center;
+  font-family: "Fira Sans";
 }
 
 .toast.info {
   background-color: #3498db;
 }
 .toast.success {
-  background-color: #181818;
-  color: #fff;
+  background-color: white;
+  color: black;
 }
 .toast.error {
   background-color: #e74c3c;

@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref, watch } from "vue";
+import { ref, watch } from "vue";
 
 const props = defineProps({
   isOpen: Boolean,
@@ -70,11 +70,12 @@ watch(
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.5);
+  z-index: 2;
 }
 
 .modal-container {
-  background: #181818;
-  color: white;
+  background: #fff;
+  color: black;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -132,7 +133,7 @@ input {
 }
 
 .close-btn:hover {
-  color: #fff;
+  color: black;
 }
 
 .header-section {
