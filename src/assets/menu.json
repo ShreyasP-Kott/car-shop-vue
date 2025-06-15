@@ -192,14 +192,6 @@
         "headquarters": "Coventry, UK",
         "popular_models": ["Range Rover", "Discovery", "Defender"],
         "website": "https://www.landrover.com"
-      },
-      {
-        "name": "Volvo",
-        "origin": "Sweden",
-        "founded": 1927,
-        "headquarters": "Gothenburg, Sweden",
-        "popular_models": ["XC90", "S60", "V60"],
-        "website": "https://www.volvocars.com"
       }
     ],
     "EVs": [

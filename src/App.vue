@@ -4,7 +4,7 @@ import Carousel from "./components/Carousel.vue";
 import Footer from "./components/Footer.vue";
 import LoginModal from "./components/LoginModal.vue";
 import Toast from "./components/Toast.vue";
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -15,10 +15,16 @@ let isLoggedIn = ref(null);
 const toastRef = ref(null);
 let clearForm = ref(false);
 const userInfo = ref(null);
-watch(isLoggedIn, (value) => {
-  console.log(value);
+
+onMounted(() => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    isLoggedIn.value = true;
+    userInfo.value = JSON.parse(localStorage.getItem("user"));
+  }
 });
-const handleLogin = async (loginData) => {
+
+const handleLogin = async loginData => {
   try {
     const response = await fetch("https://localhost:7154/api/auth/login", {
       method: "POST",
@@ -38,10 +44,11 @@ const handleLogin = async (loginData) => {
 
     const data = await response.json();
     localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
     router.push("/list");
     isLoggedIn.value = true;
     userInfo.value = { ...data.user };
-    // showToast(data.message, "success");
+    showToast(data.message, "success");
   } catch (error) {
     errorMessage.value = error.message;
   }
@@ -57,20 +64,22 @@ const showToast = (message, type) => {
 
 <template>
   <Header
-    @showLogin="(value) => (isOpen = value)"
+    @showLogin="value => (isOpen = value)"
     :isLoggedIn="isLoggedIn"
     :userInfo="userInfo"
+    @loggedIn="value => (isLoggedIn = value)"
   ></Header>
   <router-view
-    @openLoginModal="(value) => (isOpen = value)"
+    @openLoginModal="value => (isOpen = value)"
     :isLoggedIn="isLoggedIn"
-    @isLoggedIn="(value) => (isLoggedIn = value)"
+    @isLoggedIn="value => (isLoggedIn = value)"
+    :showToast="showToast"
   />
   <Footer></Footer>
   <LoginModal
     :isOpen="isOpen"
     @close="handleClose"
-    @login="(data) => handleLogin(data)"
+    @login="data => handleLogin(data)"
     :errorMessage="errorMessage"
     :clearForm="clearForm"
   />

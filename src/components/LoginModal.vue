@@ -3,22 +3,12 @@
     <div class="modal-container">
       <div class="header-section">
         <h2 class="modal-title">Please login to continue</h2>
-        <i
-          @click="closeModal"
-          class="fa fa-times close-btn"
-          aria-hidden="true"
-        ></i>
+        <i @click="closeModal" class="fa fa-times close-btn" aria-hidden="true"></i>
       </div>
       <form @submit.prevent="handleLogin">
         <div class="form-group">
           <label for="email">Email</label>
-          <input
-            ref="emailRef"
-            v-model="email"
-            type="email"
-            id="email"
-            required
-          />
+          <input ref="emailRef" v-model="email" type="email" id="email" required />
         </div>
         <div class="form-group">
           <label for="password">Password</label>
@@ -56,7 +46,7 @@ const closeModal = () => {
 
 watch(
   () => props.clearForm,
-  (value) => {
+  value => {
     if (value) closeModal();
   }
 );
@@ -70,7 +60,7 @@ watch(
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 2;
+  z-index: 1000;
 }
 
 .modal-container {
@@ -124,12 +114,13 @@ input {
 }
 
 .close-btn {
-  margin-top: 10px;
   font-size: 0.85rem;
   color: #555;
   background: none;
   border: none;
   cursor: pointer;
+  top: 0px;
+  right: 0;
 }
 
 .close-btn:hover {
@@ -137,6 +128,7 @@ input {
 }
 
 .header-section {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;

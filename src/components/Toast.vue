@@ -25,7 +25,7 @@ const addToast = (message, type = "info", duration = 3000) => {
   }, duration);
 };
 
-const removeToast = (index) => {
+const removeToast = index => {
   toasts.value.splice(index, 1);
 };
 
@@ -35,8 +35,8 @@ defineExpose({ addToast });
 <style scoped>
 .toast-container {
   position: fixed;
-  top: 55px;
-  right: -40px;
+  bottom: 50px;
+  left: 138px;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
